@@ -4,6 +4,10 @@ Browser hackyness to bulk remove friends because As of now Xbox web interface do
 
 # THIS CAN STOP WORKING AT ANYTIME IF XBOX WEBSITE CHANGES UP THEIR API STRUCTURE. works as of Mar 3 2023
 
+# Demo
+
+https://youtu.be/IZvXQLVrd_s
+
 ### Step 1
 
 - Open the Developer Console in a new Firefox window
@@ -47,7 +51,3 @@ Browser hackyness to bulk remove friends because As of now Xbox web interface do
 - If the list looks good, run `deleteFriends()` in the dev console
 
 Profit
-
-# Demo
-
-https://youtu.be/IZvXQLVrd_s
