@@ -2,6 +2,8 @@
 
 Browser hackyness to bulk remove friends because As of now Xbox web interface doesn't let you....... idk why
 
+# THIS CAN STOP WORKING AT ANYTIME IF XBOX WEBSITE CHANGES UP THEIR API STRUCTURE. works as of Mar 3 2023
+
 ### Step 1
 
 - Open the Developer Console in a new Firefox window
