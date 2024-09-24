@@ -4,6 +4,8 @@ Browser hackyness to bulk remove friends because As of now Xbox web interface do
 
 # THIS CAN STOP WORKING AT ANYTIME IF XBOX WEBSITE CHANGES UP THEIR API STRUCTURE. works as of Mar 3 2023
 
+# UPDATE SEP 2024 - This doesn't work right now. Almost. Working on another fix.
+
 # Demo
 
 https://youtu.be/IZvXQLVrd_s
