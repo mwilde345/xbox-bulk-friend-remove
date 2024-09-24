@@ -14,46 +14,24 @@ friend2,
 friend3
 `;
 
-// Get the UUID for a gamertag
-getGamerTagID = async (gamerTag) => {
-  const url = `https://account.xbox.com/en-us/profile?gamertag=${gamerTag}`;
-  return await fetch(url, {
-    credentials: "include",
-    headers: {
-      Accept: "application/json, text/plain, */*",
-      "onerf-spa": "1",
-      __RequestVerificationToken: token,
-    },
-    referrer: "https://account.xbox.com/en-us/profile",
-    method: "GET",
-    mode: "cors",
-  })
-    .then((result) => {
-      return result.json().then((data) => {
-        const id = data.PrimaryArea.Regions[0].Modules[0].DetailViewModel.Id;
-        console.log("SUCCESS id for ", gamerTag, " is ", id);
-        return id;
-      });
-    })
-    .catch((e) => {
-      console.error("FAIL to get gamertag ID for", gamerTag);
-    });
-};
-
 // Remove single friend
 deleteSingleFriend = async (id) => {
-  const url =
-    "https://account.xbox.com/en-us/xbox/account/api/v1/social/RemoveFriends";
+  const url = `https://social.xboxlive.com/users/xuid(${userID})/people/xuid(${id})`;
   return await fetch(url, {
     credentials: "include",
     headers: {
-      Accept: "application/json, text/plain, */*",
+      host: "social.xboxlive.com",
+      Accept: "application/json",
       "content-type": "application/json",
-      __RequestVerificationToken: token,
+      authorization: token,
+      "x-xbl-contract-version": "3",
+      "Sec-Fetch-Dest": "empty",
+      "Sec-Fetch-Mode": "cors",
+      "Sec-Fetch-Site": "cross-site",
     },
-    referrer: "https://account.xbox.com/en-us/profile",
-    body: `{\n  \"xuids\": [\n    \"${id}\"\n  ]\n}`,
-    method: "POST",
+    origin: "https://www.xbox.com",
+    referrer: "https://www.xbox.com/",
+    method: "DELETE",
     mode: "cors",
   })
     .then((result) => {
@@ -67,28 +45,24 @@ deleteSingleFriend = async (id) => {
 
 // Get IDs for a comma separated list of gamertags
 getIDs = async (friendsToDelete) => {
-  const ids = [];
-  for (let i = 0; i < friendsToDelete.length; i++) {
-    const tag = friendsToDelete[i];
-    let id = await getGamerTagID(tag);
-    ids.push(id);
-    console.log("...");
-    await sleep();
-  }
-  return ids;
+  console.log(friendsToDelete);
+  console.log(friendsIDbyName);
+  return friendsToDelete.map((tag) => friendsIDbyName[tag]);
 };
 
 // Get IDs for gamertags and use them to step through each one and delete friends
 deleteFriends = async () => {
   console.log("Starting deletion, please wait...");
-  const deletingArray = listOfFriendsToDelete.replace("\n", "").split(",");
+  const deletingArray = listOfFriendsToDelete.replaceAll("\n", "").split(",");
   const ids = await getIDs(deletingArray);
   console.log(
     "Finished fetching IDs for all gamertags in deletion list. If some failed, delete those manually. Deleting the rest now. Please wait..."
   );
+  console.log(ids);
   let deletedCount = 0;
   for (let i = 0; i < ids.length; i++) {
     const id = ids[i];
+    console.log("deleting friend", id);
     const successfulDeletion = await deleteSingleFriend(id);
     deletedCount += successfulDeletion ? 1 : 0;
     console.log("...");
